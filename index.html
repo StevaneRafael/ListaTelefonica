@@ -24,6 +24,7 @@
 		}
 	</style>
 	<script src="lib/angular/angular.js"></script>
+	<script src="lib/angular/angular-locale_pt_br.js"></script>	
 	<script src="lib/angular/angular-messages.js"></script>
 	<script>
 		angular.module("listaTelefonica", ["ngMessages"]);
@@ -35,12 +36,12 @@
 				{nome: "Maria" , telefone: "85547111", data: new Date(), operadora: {nome: "Tim", codigo: "16", categoria: "Celular"}}		
 			];
 			$scope.operadoras = [
-				{nome: "Oi", codigo: 14, categoria: "Celular"},
-				{nome: "Vivo", codigo: 15, categoria: "Celular"},
-				{nome: "Tim", codigo: 16, categoria: "Celular"},
-				{nome: "Claro", codigo: 17, categoria: "Celular"},
-				{nome: "GVT", codigo: 18, categoria: "Fixo"},
-				{nome: "Embratel", codigo: 19, categoria: "Fixo"}
+				{nome: "Oi", codigo: 14, categoria: "Celular", preco: 2},
+				{nome: "Vivo", codigo: 15, categoria: "Celular", preco: 1},
+				{nome: "Tim", codigo: 16, categoria: "Celular", preco: 3},
+				{nome: "Claro", codigo: 17, categoria: "Celular", preco: 2},
+				{nome: "GVT", codigo: 18, categoria: "Fixo", preco: 1},
+				{nome: "Embratel", codigo: 19, categoria: "Fixo", preco: 2}
 			];
 			$scope.adicionarContato = function(contato){
 				$scope.contatos.push(angular.copy(contato));
@@ -91,7 +92,7 @@
 		<form name="contatoForm">
 			<input class="form-control" type="text" ng-model="contato.nome" name = "nome" placeholder="Nome" ng-required="true" ng-minlength="10"/>
 			<input class="form-control" type="text" ng-model="contato.telefone" name = "telefone" placeholder="Telefone" ng-required="true" ng-pattern="/^\d{4,5}-\d{4}$/"/>
-			<select class="form-control" ng-model="contato.operadora" ng-options="operadora.nome group by operadora.categoria for operadora in operadoras">
+			<select class="form-control" ng-model="contato.operadora" ng-options="operadora.nome + '( ' + (operadora.preco | currency) + ' )' for operadora in operadoras | orderBy:'nome'">
 				<option value="">Selecione uma operadora</option>
 			</select>
 		</form>
@@ -114,6 +115,7 @@
 
 		<button class="btn btn-primary btn-block" ng-click="adicionarContato(contato)" ng-disabled="contatoForm.$invalid">Adicionar Contato</button>
 		<button class="btn btn-danger btn-block" ng-click="apagarContatos(contatos)" ng-if="isContatoSelecionado(contatos)">Apagar Contatos</button>
+
 	</div>
 	<div ng-include="'footer.html'"></div>
 </body>
